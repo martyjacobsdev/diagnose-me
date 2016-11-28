@@ -1,5 +1,4 @@
 package application;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,12 +8,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.util.*;
 
 /**
  * Created by Marty on 26/11/2016.
@@ -41,8 +44,9 @@ public class Controller {
         grid.setVgap(10);
         grid.setPadding(new Insets(0, 0, 25, 25));
 
-        Scene scene = new Scene(grid, 320, 250);
+        final Scene scene = new Scene(grid, 320, 700);
         stage.setScene(scene);
+
 
         Text text = new Text(0,300,"Enter Symptom:");
 
@@ -73,6 +77,7 @@ public class Controller {
         final Text actiontarget = new Text();
         grid.add(actiontarget, 0, 3);
 
+        actiontarget.setWrappingWidth(150);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -80,9 +85,29 @@ public class Controller {
             public void handle(ActionEvent e) {
                 actiontarget.setFill(Color.FIREBRICK);
                 String input = String.valueOf(userTextField.getText());
-                model.setSymptom(input);
-                model.process();
-                actiontarget.setText(input);
+                model.setSymptom(input.toLowerCase());
+                List<String> output = model.process();
+                actiontarget.setText(" \n " + output.toString()
+                );
+
+            }
+        });
+
+        userTextField.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent ke)
+            {
+                if (ke.getCode().equals(KeyCode.ENTER))
+                {
+                    actiontarget.setFill(Color.FIREBRICK);
+                    String input = String.valueOf(userTextField.getText());
+                    model.setSymptom(input.toLowerCase());
+                    List<String> output = model.process();
+                    actiontarget.setText(" \n " + output.toString()
+
+                    );
+                }
             }
         });
 
@@ -92,6 +117,5 @@ public class Controller {
         stage.show();
 
     }
-
 
 }
