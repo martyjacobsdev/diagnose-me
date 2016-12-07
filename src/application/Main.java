@@ -23,6 +23,7 @@ public class Main extends Application {
         //Controller
         Controller controller = new Controller(stage, model, view);
 
+        //set the stage
         controller.initStage();
     }
 

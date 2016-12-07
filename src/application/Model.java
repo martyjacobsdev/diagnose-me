@@ -16,7 +16,10 @@ public class Model {
 
     private String symptom;
 
-    //K = Symptom , V = Illness
+    //K = symptom V = Illness mapped to it's probability
+    private HashMap<String, HashMap<String, Integer>> illnessProbability;
+
+    //K = symptom , V = Illness
     private HashMap<String, List<String>> illnessLookupTable;
 
     public Model() {
@@ -30,17 +33,68 @@ public class Model {
 
         //reads the available data
         illnessLookupTable = readDataset();
+        illnessProbability = readDatasetDeriveProbabilities();
 
         //checks for a possible illness match
-        DecisionTree tree = new DecisionTree(symptom, illnessLookupTable);
-        List<String> outcome = tree.decideOutcome();
+        DecisionTree tree = new DecisionTree(symptom, illnessLookupTable, illnessProbability);
 
-        return outcome;
+        List<String> outcome = tree.decideOutcomeBlindly();
+
+        List<String> probabilisticOutcome = tree.decideOutcomeBasedOnProbability();
+
+        //TODO: HERE - alternate between prob outcome / outcome
+
+        return probabilisticOutcome;
+    }
+
+
+    /**
+     * Reads a dataset and processes the probability of illness based on
+     * age, gender, race etc. then returns it
+     *
+     * @return derived probability of each illness based on symptom
+     */
+    public HashMap<String, HashMap<String, Integer>> readDatasetDeriveProbabilities() {
+
+        String result =
+                restTemplate.getForObject(
+                        "http://example.com/hotels/{hotel}/bookings/{booking}",
+                        String.class,"42", "21"
+                );
+
+
+        //K = symptom V = illness mapped to it's probability
+        HashMap<String, HashMap<String, Integer>> dataset = new HashMap();
+
+        //read and store to dataset
+
+        for (String symptom : illnessLookupTable.keySet()) {
+
+            HashMap<String, Integer> map = new HashMap<>();
+
+            for (String illness : illnessLookupTable.get(symptom)) {
+
+                //TODO: Here change 0 to a certain probability
+                //all illness have equal probability of occurring
+                map.put(illness, 0);
+
+                dataset.put(symptom, map);
+            }
+        }
+
+
+        //TEST ONLY
+        HashMap<String, Integer> result = dataset.get("fever");
+        result.put("delirium", 30);
+        result.put("infection", 20);
+        result.put("influenza", 70);
+        return dataset;
     }
 
     /**
      * Reads the dataset and converts to a lookup table
      * Source: http://people.dbmi.columbia.edu/~friedma/Projects/DiseaseSymptomKB/index.html
+     *
      * @return readible K/V pairs (symptom to illnesses)
      */
     public HashMap<String, List<String>> readDataset() {
@@ -60,10 +114,11 @@ public class Model {
 
                 String[] data = line.split(del);
 
-                if(data[1] == "") {
+                if (data[1] == "") {
                     continue;
                 }
-                if(!map.containsKey(data[1])) {
+
+                if (!map.containsKey(data[1])) {
 
                     illnesses = new ArrayList<String>();
                     illnesses.add(data[0]);
@@ -83,7 +138,6 @@ public class Model {
 
         return map;
     }
-
 
 
 }
