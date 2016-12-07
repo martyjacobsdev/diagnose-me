@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="diagnoseMe" default="all">
+    <target name="clean">
+        <delete dir="build">
+            <delete file="diagnoseMe.jar"/>
+        </delete>
+
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes" includeantruntime="false"/>
+        
+    </target>
+
+    <target name="all" depends="compile">
+        <jar destfile="./diagnoseMe.jar" basedir="build/classes">
+
+            <manifest>
+                <attribute name="Main-Class" value="application.Main"/>
+            </manifest>
+
+                </jar>
+    </target>
+
+</project>

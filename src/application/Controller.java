@@ -2,8 +2,11 @@ package application;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -18,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -29,6 +33,8 @@ public class Controller {
     private Model model;
     private View view;
 
+    @FXML
+    private GridPane gpane;
 
     public Controller(Stage stage, Model model, View view) {
         this.stage = stage;
@@ -39,6 +45,7 @@ public class Controller {
     public void initStage() {
 
         stage.setTitle("diagnoseMe");
+
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.TOP_LEFT);
         grid.setHgap(10);
@@ -112,16 +119,16 @@ public class Controller {
                     } else {
 
                         if (output.get(0) != null && output.get(1) != null && output.get(2) != null)
-                            actiontarget.setText("illness it could be: \n \n " + output.get(0) + " \n "
+                            actiontarget.setText("potential illnesses: \n \n " + output.get(0) + " \n "
                                     + output.get(1) + " \n " + output.get(2));
                         else if (output.get(0) != null && output.get(1) != null && output.get(2) == null)
-                            actiontarget.setText("illness it could be: \n \n " + output.get(0) + " \n "
+                            actiontarget.setText("potential illnesses: \n \n " + output.get(0) + " \n "
                                     + output.get(1) + " \n " + "");
                         else if (output.get(0) != null && output.get(1) == null && output.get(2) == null)
-                            actiontarget.setText("illness it could be: \n \n " + output.get(0) + " \n " + "" +
+                            actiontarget.setText("potential illnesses: \n \n " + output.get(0) + " \n " + "" +
                                     " \n " + "");
                         else if (output.get(0) == null && output.get(1) == null && output.get(2) == null)
-                            actiontarget.setText("illness it could be: \n \n " + "" + " \n " + "" +
+                            actiontarget.setText("potential illnesses: \n \n " + "" + " \n " + "" +
                                     " \n " + "");
 
                     }

@@ -1,6 +1,9 @@
 package application;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Field;
@@ -40,7 +43,7 @@ public class Main extends Application {
             // ignore
         }
 
-        launch(args);
+        Application.launch(Main.class, args);
 
     }
 

@@ -78,9 +78,9 @@ public class Model {
 
         //TEST ONLY
         HashMap<String, Integer> result = dataset.get("fever");
-        result.put("delirium", 30);
-        result.put("infection", 20);
-        result.put("influenza", 70);
+        result.put("delirium", 11);
+        result.put("infection", 23);
+        result.put("influenza", 52);
         return dataset;
     }
 
