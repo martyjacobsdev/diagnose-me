@@ -56,13 +56,6 @@ public class Model {
      */
     public HashMap<String, HashMap<String, Integer>> readDatasetDeriveProbabilities() {
 
-        String result =
-                restTemplate.getForObject(
-                        "http://example.com/hotels/{hotel}/bookings/{booking}",
-                        String.class,"42", "21"
-                );
-
-
         //K = symptom V = illness mapped to it's probability
         HashMap<String, HashMap<String, Integer>> dataset = new HashMap();
 
